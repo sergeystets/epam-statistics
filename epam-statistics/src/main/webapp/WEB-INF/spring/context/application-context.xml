@@ -26,7 +26,8 @@
 	</bean>
 	
 	<bean id="statistcisDaoJsonImpl" class="epam.cdp.spring.task3.dao.impl.StatistcisDaoJsonImpl">
-	<property name="resource" value="classpath:/data/epam_json.txt"></property>
+	<property name="epamStatistics" value="classpath:/data/epam-statistics.json"></property>
+	<property name="cityLocations" value="classpath:/data/city-locations.json"></property>
 	</bean>
 
 	<bean

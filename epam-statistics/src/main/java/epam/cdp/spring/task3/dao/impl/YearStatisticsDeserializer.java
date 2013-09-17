@@ -16,10 +16,17 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import epam.cdp.spring.task3.bean.City;
+import epam.cdp.spring.task3.bean.Location;
 import epam.cdp.spring.task3.bean.YearStatistics;
 
 public class YearStatisticsDeserializer implements
 		JsonDeserializer<YearStatistics> {
+
+	private Map<String, Location> locations;
+
+	public YearStatisticsDeserializer(Map<String, Location> locations) {
+		this.locations = locations;
+	}
 
 	@Override
 	public YearStatistics deserialize(JsonElement json, Type typeOfT,
@@ -43,7 +50,9 @@ public class YearStatisticsDeserializer implements
 			List<City> cities = new ArrayList<>();
 			for (Map.Entry<String, List<Double>> rawCity : rawCities.entrySet()) {
 				City city = new City();
-				city.setName(rawCity.getKey());
+				String cityName = rawCity.getKey();
+				city.setName(cityName);
+				city.setLocation(locations.get(cityName));
 				city.setEmploeesPerQuater(rawCity.getValue());
 				cities.add(city);
 			}

@@ -8,8 +8,6 @@ import epam.cdp.spring.task3.bean.YearStatistics;
 
 public interface StatistcisService {
 
-	public YearStatistics getStatisticsForCity() throws IOException;
-
 	public List<City> getCitiesForYear(Integer year) throws IOException;
 
 }

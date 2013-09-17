@@ -14,6 +14,5 @@ public class YearStatistics {
 	public void setData(Map<Integer, List<City>> data) {
 		this.data = data;
 	}
-	
-	
+
 }

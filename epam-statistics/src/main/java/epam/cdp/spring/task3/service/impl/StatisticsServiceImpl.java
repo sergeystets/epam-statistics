@@ -21,10 +21,7 @@ public class StatisticsServiceImpl implements StatistcisService {
 		this.statistcisDao = statistcisDao;
 	}
 
-	@Override
-	public YearStatistics getStatisticsForCity() throws IOException {
-		return statistcisDao.getYearStatistics();
-	}
+	
 
 	@Override
 	public List<City> getCitiesForYear(Integer year) throws IOException {

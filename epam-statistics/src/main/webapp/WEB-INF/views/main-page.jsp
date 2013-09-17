@@ -14,7 +14,7 @@
 	google.load('visualization', '1', {
 		'packages' : [ 'geochart' ]
 	});
-	google.setOnLoadCallback(drawTest);
+	google.setOnLoadCallback(googleChartOnLoadHAndler);
 </script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

@@ -14,14 +14,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import epam.cdp.spring.task3.bean.City;
-import epam.cdp.spring.task3.bean.YearStatistics;
 import epam.cdp.spring.task3.service.StatistcisService;
-
 
 @Controller
 public class MainController {
 
-	
 	@Autowired
 	private StatistcisService statistcisService;
 
@@ -31,23 +28,12 @@ public class MainController {
 
 	public MainController() {
 	}
-	
-	@RequestMapping("/")
-	public String showMainPage(){
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String showMainPage() {
 		return "main-page";
 	}
 
-	@RequestMapping(value = "/getAllStatistics", method = RequestMethod.GET)
-	public @ResponseBody
-	String getAllStatistics() throws IOException {
-
-		YearStatistics statistcis = statistcisService.getStatisticsForCity();
-
-		JsonObject response = new JsonObject();
-		Gson gson = new Gson();
-		response.add("yearStatistics", gson.toJsonTree(statistcis.getData()));
-		return response.toString();
-	}
 
 	@RequestMapping(value = "/getCitiesByYear", method = RequestMethod.GET)
 	public @ResponseBody
