@@ -35,7 +35,7 @@ public class MainController {
 	}
 
 
-	@RequestMapping(value = "/getCitiesByYear", method = RequestMethod.GET)
+	@RequestMapping(value = "/getCitiesByYear", method = RequestMethod.POST)
 	public @ResponseBody
 	String getCitiesForYear(@RequestParam("year") Integer year)
 			throws IOException {
@@ -44,7 +44,7 @@ public class MainController {
 
 		JsonObject response = new JsonObject();
 		Gson gson = new Gson();
-		response.add("city", gson.toJsonTree(cities));
+		response.add("cities", gson.toJsonTree(cities));
 		return response.toString();
 	}
 }

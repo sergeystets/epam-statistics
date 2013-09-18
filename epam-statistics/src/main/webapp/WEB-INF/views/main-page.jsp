@@ -14,7 +14,7 @@
 	google.load('visualization', '1', {
 		'packages' : [ 'geochart' ]
 	});
-	google.setOnLoadCallback(googleChartOnLoadHAndler);
+	google.setOnLoadCallback(hadleGeochart);
 </script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -22,6 +22,6 @@
 </head>
 <body>
 	<h2>This is Epam Statistics application</h2>
-	<div id="map"></div>
+	<div id="geochart"></div>
 </body>
 </html>
