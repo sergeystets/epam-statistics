@@ -22,6 +22,7 @@
 </head>
 <body>
 	<h2>This is Epam Statistics application</h2>
+	<h2 id="selectedYear"></h2>
 	<div id="geochart"></div>
 </body>
 </html>

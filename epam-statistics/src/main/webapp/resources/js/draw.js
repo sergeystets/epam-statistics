@@ -1,6 +1,8 @@
+year = 2012;
 $(document).ready(
 		function() {
 
+			$("#selectedYear").html("Selected year: " + year);
 			geoChart = new google.visualization.GeoChart(document
 					.getElementById("geochart"));
 			google.visualization.events.addListener(geoChart, "ready",
@@ -25,7 +27,7 @@ function hadleGeochart() {
 			data = transformCityListToDataTable(data['cities'], year);
 			var options = {
 				displayMode : 'markers',
-				legend: 'none',
+				legend : 'none',
 				colorAxis : {
 					colors : [ 'green', 'blue' ]
 				}
@@ -40,12 +42,11 @@ function hadleGeochart() {
 
 }
 
-function transformCityListToDataTable(cityList, year) {
+function transformCityListToDataTable(cityList) {
 	var data = new google.visualization.DataTable();
 	data.addColumn('number', 'Lat');
 	data.addColumn('number', 'Long');
 	data.addColumn('string', 'tooltip');
-	data.addColumn('number', 'Foundation date');
 
 	var numOfCities = cityList.length;
 	for ( var i = 0; i < numOfCities; i++) {
@@ -55,7 +56,7 @@ function transformCityListToDataTable(cityList, year) {
 		console.log(cityName);
 		console.log(longitude);
 		console.log(latitude);
-		data.addRows([ [ latitude, longitude, cityName, year ] ]);
+		data.addRows([ [ latitude, longitude, cityName ] ]);
 	}
 	console.log(data);
 	return data;
