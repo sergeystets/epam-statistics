@@ -1,4 +1,6 @@
 year = 2012;
+cityList = undefined;
+
 $(document).ready(
 		function() {
 
@@ -7,6 +9,8 @@ $(document).ready(
 					.getElementById("geochart"));
 			google.visualization.events.addListener(geoChart, "ready",
 					onReadyHandler);
+			google.visualization.events.addListener(geoChart, 'select',
+					onSelectHandler);
 
 		});
 
@@ -14,17 +18,50 @@ function onReadyHandler() {
 	$("circle").attr("r", 4);
 }
 
+function onSelectHandler() {
+	var selection = geoChart.getSelection();
+	geoChart.setSelection(undefined);
+	var row = selection[0].row;
+	var cityName = cityList[row].name;
+
+	$.ajax({
+		type : "GET",
+		url : "getEmployeesInfo",
+		dataType : "json",
+		data : {
+			year : year,
+			cityName : cityName
+		},
+		success : function(data) {
+			alert("employees chart");
+			drawEmployeesChart(data);
+
+		},
+		error : function(xhr) {
+			alert("something terrible happened" + xhr);
+		}
+
+	});
+
+}
+
+function drawEmployeesChart(data) {
+	
+	$("#chartPopup").remove();
+}
+
 function hadleGeochart() {
 	var year = 2012;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url : "getCitiesByYear",
 		data : {
 			year : year
 		},
 		dataType : "json",
 		success : function(data) {
-			data = transformCityListToDataTable(data['cities'], year);
+			cityList = data['cities'];
+			var dataTable = transformCityListToDataTable(cityList, year);
 			var options = {
 				displayMode : 'markers',
 				legend : 'none',
@@ -32,7 +69,8 @@ function hadleGeochart() {
 					colors : [ 'green', 'blue' ]
 				}
 			};
-			geoChart.draw(data, options);
+			geoChart.draw(dataTable, options);
+
 		},
 		error : function(xhr) {
 			alert("something terrible happened" + xhr);

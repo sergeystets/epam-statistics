@@ -1,18 +1,12 @@
 package epam.cdp.spring.task3.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class City {
 
 	private String name;
 
 	private Location location;
 
-	private List<Double> emploeesPerQuater;
-
 	public City() {
-		emploeesPerQuater = new ArrayList<>();
 		location = new Location(0, 0);
 	}
 
@@ -30,14 +24,6 @@ public class City {
 
 	public void setLocation(Location location) {
 		this.location = location;
-	}
-
-	public List<Double> getEmploeesPerQuater() {
-		return emploeesPerQuater;
-	}
-
-	public void setEmploeesPerQuater(List<Double> emploeesPerQuater) {
-		this.emploeesPerQuater = emploeesPerQuater;
 	}
 
 	@Override
@@ -70,6 +56,11 @@ public class City {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "City [name=" + name + ", location=" + location + "]";
 	}
 
 }

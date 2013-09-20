@@ -18,11 +18,15 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import epam.cdp.spring.task3.bean.City;
-import epam.cdp.spring.task3.dao.StatistcisDao;
+import epam.cdp.spring.task3.bean.EmployeesInfo;
 import epam.cdp.spring.task3.bean.Location;
+import epam.cdp.spring.task3.dao.IStatistcisDao;
+import epam.cdp.spring.task3.dao.impl.deserializer.CityDeserializer;
+import epam.cdp.spring.task3.dao.impl.deserializer.EmployessInfoDeserializer;
+import epam.cdp.spring.task3.dao.impl.deserializer.LocationDeserializer;
 
 @Repository
-public class StatistcisDaoJsonImpl implements StatistcisDao {
+public class StatistcisDaoJsonImpl implements IStatistcisDao {
 
 	private Resource epamStatistics;
 
@@ -41,14 +45,15 @@ public class StatistcisDaoJsonImpl implements StatistcisDao {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Type type = new TypeToken<List<City>>() {
 		}.getType();
-		Map<String,Location> locations = getLocations();
-		gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year, locations));
+		Map<String, Location> locations = getLocations();
+		gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year,
+				locations));
 		Gson gson = gsonBuilder.create();
 		JsonParser parser = new JsonParser();
 		JsonReader reader = new JsonReader(new FileReader(
 				epamStatistics.getFile()));
-		JsonElement citiesElement = parser.parse(reader);
-		List<City> cities = gson.fromJson(citiesElement, type);
+		JsonElement epamStatisticsElement = parser.parse(reader);
+		List<City> cities = gson.fromJson(epamStatisticsElement, type);
 
 		return cities;
 	}
@@ -67,6 +72,24 @@ public class StatistcisDaoJsonImpl implements StatistcisDao {
 		Map<String, Location> locations = gson.fromJson(locationsElement, type);
 
 		return locations;
+	}
+
+	@Override
+	public List<EmployeesInfo> getEmployeesInfo(String cityName, Integer year)
+			throws IOException {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Type type = new TypeToken<List<EmployeesInfo>>() {
+		}.getType();
+		gsonBuilder.registerTypeAdapter(type, new EmployessInfoDeserializer());
+		Gson gson = gsonBuilder.create();
+		JsonParser parser = new JsonParser();
+		JsonReader reader = new JsonReader(new FileReader(
+				epamStatistics.getFile()));
+		JsonElement epamStatisticsElement = parser.parse(reader);
+		List<EmployeesInfo> employessInfo = gson.fromJson(
+				epamStatisticsElement, type);
+
+		return employessInfo;
 	}
 
 }
