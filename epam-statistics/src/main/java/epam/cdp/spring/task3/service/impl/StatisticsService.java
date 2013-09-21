@@ -29,6 +29,6 @@ public class StatisticsService implements IStatistcisService {
 	@Override
 	public List<EmployeesInfo> getEmployeesInfo(String cityName, Integer year)
 			throws IOException {
-		return getEmployeesInfo(cityName, year);
+		return statistcisDao.getEmployeesInfo(cityName, year);
 	}
 }
