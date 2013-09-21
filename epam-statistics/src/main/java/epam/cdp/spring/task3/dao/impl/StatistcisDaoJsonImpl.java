@@ -1,7 +1,8 @@
 package epam.cdp.spring.task3.dao.impl;
 
+import static epam.cdp.spring.task3.dao.utils.DaoUtils.parseJsonElement;
+
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 import epam.cdp.spring.task3.bean.City;
 import epam.cdp.spring.task3.bean.EmployeesInfo;
@@ -32,11 +31,11 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 
 	private Resource cityLocations;
 
-	public void setEpamStatistics(Resource epamStatistics) throws IOException {
+	public void setEpamStatistics(Resource epamStatistics) {
 		this.epamStatistics = epamStatistics;
 	}
 
-	public void setCityLocations(Resource cityLocations) throws IOException {
+	public void setCityLocations(Resource cityLocations) {
 		this.cityLocations = cityLocations;
 	}
 
@@ -49,10 +48,7 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 		gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year,
 				locations));
 		Gson gson = gsonBuilder.create();
-		JsonParser parser = new JsonParser();
-		JsonReader reader = new JsonReader(new FileReader(
-				epamStatistics.getFile()));
-		JsonElement epamStatisticsElement = parser.parse(reader);
+		JsonElement epamStatisticsElement = parseJsonElement(cityLocations);
 		List<City> cities = gson.fromJson(epamStatisticsElement, type);
 
 		return cities;
@@ -65,10 +61,7 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 		}.getType();
 		gsonBuilder.registerTypeAdapter(type, new LocationDeserializer());
 		Gson gson = gsonBuilder.create();
-		JsonParser parser = new JsonParser();
-		JsonReader reader = new JsonReader(new FileReader(
-				cityLocations.getFile()));
-		JsonElement locationsElement = parser.parse(reader);
+		JsonElement locationsElement = parseJsonElement(cityLocations);
 		Map<String, Location> locations = gson.fromJson(locationsElement, type);
 
 		return locations;
@@ -82,10 +75,7 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 		}.getType();
 		gsonBuilder.registerTypeAdapter(type, new EmployessInfoDeserializer());
 		Gson gson = gsonBuilder.create();
-		JsonParser parser = new JsonParser();
-		JsonReader reader = new JsonReader(new FileReader(
-				epamStatistics.getFile()));
-		JsonElement epamStatisticsElement = parser.parse(reader);
+		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
 		List<EmployeesInfo> employessInfo = gson.fromJson(
 				epamStatisticsElement, type);
 
