@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -30,8 +31,12 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/")
-	public String showMainPage() {
-		return "main-page";
+	public ModelAndView showMainPage() throws IOException {
+		ModelAndView mw = new ModelAndView();
+		mw.setViewName("main-page");
+		List<Integer> years = statistcisService.getYears();
+		mw.addObject("years", years);
+		return mw;
 	}
 
 	@RequestMapping(value = "/getCitiesByYear")
@@ -50,11 +55,11 @@ public class MainController {
 	@RequestMapping(value = "/getEmployeesInfo")
 	public @ResponseBody
 	String getEmployessInfo(
-			@RequestParam(value = "cityName", required = true) String cityName,
-			@RequestParam(value = "year", required = true) Integer year)
+			@RequestParam(value = "cityName", required = true) String cityName)
 			throws IOException {
-		
-		List<EmployeesInfo> employeesInfo = statistcisService.getEmployeesInfo(cityName, year);
+
+		List<EmployeesInfo> employeesInfo = statistcisService.getEmployeesInfo(
+				cityName);
 		JsonObject response = new JsonObject();
 		Gson gson = new Gson();
 		response.add("employeesInfo", gson.toJsonTree(employeesInfo));

@@ -1,4 +1,4 @@
-package epam.cdp.spring.task3.dao.impl.deserializer;
+package epam.cdp.spring.task3.dao.deserializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

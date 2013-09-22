@@ -9,7 +9,9 @@ import epam.cdp.spring.task3.bean.EmployeesInfo;
 public interface IStatistcisDao {
 
 	List<City> getCitiesForYear(Integer year) throws IOException;
-	
-	List<EmployeesInfo> getEmployeesInfo(String cityName, Integer year) throws IOException;
+
+	List<EmployeesInfo> getEmployeesInfo(String cityName) throws IOException;
+
+	List<Integer> getYears() throws IOException;
 
 }

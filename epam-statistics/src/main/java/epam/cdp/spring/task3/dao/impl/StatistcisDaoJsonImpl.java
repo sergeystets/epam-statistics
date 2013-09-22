@@ -1,6 +1,6 @@
 package epam.cdp.spring.task3.dao.impl;
 
-import static epam.cdp.spring.task3.dao.utils.DaoUtils.parseJsonElement;
+import static epam.cdp.spring.task3.dao.utils.ParseUtils.parseJsonElement;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,9 +20,10 @@ import epam.cdp.spring.task3.bean.City;
 import epam.cdp.spring.task3.bean.EmployeesInfo;
 import epam.cdp.spring.task3.bean.Location;
 import epam.cdp.spring.task3.dao.IStatistcisDao;
-import epam.cdp.spring.task3.dao.impl.deserializer.CityDeserializer;
-import epam.cdp.spring.task3.dao.impl.deserializer.EmployessInfoDeserializer;
-import epam.cdp.spring.task3.dao.impl.deserializer.LocationDeserializer;
+import epam.cdp.spring.task3.dao.deserializer.CityDeserializer;
+import epam.cdp.spring.task3.dao.deserializer.EmployessInfoDeserializer;
+import epam.cdp.spring.task3.dao.deserializer.LocationDeserializer;
+import epam.cdp.spring.task3.dao.deserializer.YearsDeserializer;
 
 @Repository
 public class StatistcisDaoJsonImpl implements IStatistcisDao {
@@ -48,7 +49,7 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 		gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year,
 				locations));
 		Gson gson = gsonBuilder.create();
-		JsonElement epamStatisticsElement = parseJsonElement(cityLocations);
+		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
 		List<City> cities = gson.fromJson(epamStatisticsElement, type);
 
 		return cities;
@@ -68,12 +69,13 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 	}
 
 	@Override
-	public List<EmployeesInfo> getEmployeesInfo(String cityName, Integer year)
+	public List<EmployeesInfo> getEmployeesInfo(String cityName)
 			throws IOException {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Type type = new TypeToken<List<EmployeesInfo>>() {
 		}.getType();
-		gsonBuilder.registerTypeAdapter(type, new EmployessInfoDeserializer());
+		gsonBuilder.registerTypeAdapter(type, new EmployessInfoDeserializer(
+				cityName));
 		Gson gson = gsonBuilder.create();
 		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
 		List<EmployeesInfo> employessInfo = gson.fromJson(
@@ -82,4 +84,15 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 		return employessInfo;
 	}
 
+	@Override
+	public List<Integer> getYears() throws IOException {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Type type = new TypeToken<List<Integer>>() {
+		}.getType();
+		gsonBuilder.registerTypeAdapter(type, new YearsDeserializer());
+		Gson gson = gsonBuilder.create();
+		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
+		List<Integer> years = gson.fromJson(epamStatisticsElement, type);
+		return years;
+	}
 }

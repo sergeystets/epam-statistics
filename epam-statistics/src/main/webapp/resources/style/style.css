@@ -1,8 +1,23 @@
-#map {
+#geochart {
 	width: 1000px;
 	margin: auto;
 }
 
-h2 {
+h3 {
 	text-align: center;
+}
+
+body {
+	background-color: #E2E8F0;
+	
+}
+
+#year-selection{
+	margin-left: 100px;
+	width: 300px;
+}
+
+footer{
+	text-align: center;
+	color: #6F7377;
 }

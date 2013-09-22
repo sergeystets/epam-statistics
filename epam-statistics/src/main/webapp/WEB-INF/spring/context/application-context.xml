@@ -35,13 +35,4 @@
 		<property name="prefix" value="${view-resolver.prefix}" />
 		<property name="suffix" value="${view-resolver.suffix}" />
 	</bean>
-	
-	
-
-
-
-
-
-
-
 </beans>

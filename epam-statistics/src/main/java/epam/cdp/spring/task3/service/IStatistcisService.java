@@ -10,7 +10,9 @@ public interface IStatistcisService {
 
 	List<City> getCitiesForYear(Integer year) throws IOException;
 
-	List<EmployeesInfo> getEmployeesInfo(String cityName, Integer year)
+	List<EmployeesInfo> getEmployeesInfo(String cityName)
 			throws IOException;
+	
+	List<Integer> getYears() throws IOException;
 
 }
