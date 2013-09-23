@@ -21,3 +21,9 @@ footer{
 	text-align: center;
 	color: #6F7377;
 }
+
+#error{
+	text-align: center;
+	font-size: 15px;
+	margin: auto;
+}

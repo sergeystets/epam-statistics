@@ -24,6 +24,7 @@ import epam.cdp.spring.task3.dao.deserializer.CityDeserializer;
 import epam.cdp.spring.task3.dao.deserializer.EmployessInfoDeserializer;
 import epam.cdp.spring.task3.dao.deserializer.LocationDeserializer;
 import epam.cdp.spring.task3.dao.deserializer.YearsDeserializer;
+import epam.cdp.spring.task3.exception.DaoException;
 
 @Repository
 public class StatistcisDaoJsonImpl implements IStatistcisDao {
@@ -41,17 +42,21 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 	}
 
 	@Override
-	public List<City> getCitiesForYear(Integer year) throws IOException {
+	public List<City> getCitiesForYear(Integer year) throws DaoException {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Type type = new TypeToken<List<City>>() {
 		}.getType();
-		Map<String, Location> locations = getLocations();
-		gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year,
-				locations));
-		Gson gson = gsonBuilder.create();
-		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
-		List<City> cities = gson.fromJson(epamStatisticsElement, type);
-
+		List<City> cities = null;
+		try {
+			Map<String, Location> locations = getLocations();
+			gsonBuilder.registerTypeAdapter(type, new CityDeserializer(year,
+					locations));
+			Gson gson = gsonBuilder.create();
+			JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
+			cities = gson.fromJson(epamStatisticsElement, type);
+		} catch (IOException e) {
+			throw new DaoException(e);
+		}
 		return cities;
 	}
 
@@ -70,29 +75,38 @@ public class StatistcisDaoJsonImpl implements IStatistcisDao {
 
 	@Override
 	public List<EmployeesInfo> getEmployeesInfo(String cityName)
-			throws IOException {
+			throws DaoException {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Type type = new TypeToken<List<EmployeesInfo>>() {
 		}.getType();
-		gsonBuilder.registerTypeAdapter(type, new EmployessInfoDeserializer(
-				cityName));
-		Gson gson = gsonBuilder.create();
-		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
-		List<EmployeesInfo> employessInfo = gson.fromJson(
-				epamStatisticsElement, type);
+		List<EmployeesInfo> employessInfo = null;
+		try {
+			gsonBuilder.registerTypeAdapter(type,
+					new EmployessInfoDeserializer(cityName));
+			Gson gson = gsonBuilder.create();
+			JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
+			employessInfo = gson.fromJson(epamStatisticsElement, type);
+		} catch (IOException e) {
+			throw new DaoException(e);
+		}
 
 		return employessInfo;
 	}
 
 	@Override
-	public List<Integer> getYears() throws IOException {
+	public List<Integer> getYears() throws DaoException {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Type type = new TypeToken<List<Integer>>() {
 		}.getType();
-		gsonBuilder.registerTypeAdapter(type, new YearsDeserializer());
-		Gson gson = gsonBuilder.create();
-		JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
-		List<Integer> years = gson.fromJson(epamStatisticsElement, type);
+		List<Integer> years = null;
+		try {
+			gsonBuilder.registerTypeAdapter(type, new YearsDeserializer());
+			Gson gson = gsonBuilder.create();
+			JsonElement epamStatisticsElement = parseJsonElement(epamStatistics);
+			years = gson.fromJson(epamStatisticsElement, type);
+		} catch (IOException e) {
+			throw new DaoException(e);
+		}
 		return years;
 	}
 }

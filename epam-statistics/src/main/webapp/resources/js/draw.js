@@ -1,21 +1,17 @@
 year = undefined;
 cityList = undefined;
 
-$(document).ready(
-		function() {
-			$("#years").on('change', function() {
-				drawGeochart();
-			});
-			var selectedYear = $('#years option:selected').text();
-			drawSelectedYear(selectedYear);
-			geoChart = new google.visualization.GeoChart(document
-					.getElementById("geochart"));
-			google.visualization.events.addListener(geoChart, "ready",
-					onGeoChartReadyHandler);
-			google.visualization.events.addListener(geoChart, 'select',
-					onCitySelectHandler);
+$(document).ready(function() {
+	$("#years").on('change', function() {
+		drawGeochart();
+	});
+	var selectedYear = $('#years option:selected').text();
+	drawSelectedYear(selectedYear);
+	geoChart = new google.visualization.GeoChart(document.getElementById("geochart"));
+	google.visualization.events.addListener(geoChart, "ready", onGeoChartReadyHandler);
+	google.visualization.events.addListener(geoChart, 'select', onCitySelectHandler);
 
-		});
+});
 
 function drawSelectedYear(year) {
 	$("#selectedYear").html("selected year: " + year);
@@ -42,10 +38,14 @@ function onCitySelectHandler() {
 			cityName : cityName
 		},
 		success : function(data) {
+			if (isEmpty(data.employeesInfo)) {
+				alert("Error: cannot draw chart for city: " + cityName, +" in year: " + year);
+				return;
+			}
 			drawEmployeesChart(data.employeesInfo, cityName);
 		},
 		error : function(xhr) {
-			alert("something terrible happened" + xhr);
+			alert("something terrible happened");
 		}
 	});
 }
@@ -63,6 +63,10 @@ function drawGeochart() {
 		dataType : "json",
 		success : function(data) {
 			cityList = data['cities'];
+			if (isEmpty(cityList)) {
+				alert("Error: cannot draw geochart for selected year:" + year);
+				return;
+			}
 			var dataTable = transformCityListToDataTable(cityList, year);
 			var options = {
 				displayMode : 'markers',
@@ -77,9 +81,13 @@ function drawGeochart() {
 
 		},
 		error : function(xhr) {
-			alert("something terrible happened" + xhr);
+			alert("something terrible happened");
 		}
 	});
+}
+
+function isEmpty(value) {
+	return (value == null || value.length === 0);
 }
 
 function transformCityListToDataTable(cityList) {
@@ -123,8 +131,7 @@ function drawEmployeesChart(employeesInfo, cityName) {
 	var popUpHeight = window.screen.height - window.screen.height * 0.5;
 	var chartWidth = window.screen.width - window.screen.width * 0.22;
 	var chartHeight = window.screen.height - window.screen.height * 0.5;
-	var chartPopup = $('<div id=\"chartPopup\"><div id=\"chart\" style=\"width:'
-			+ chartWidth + 'px; height: ' + chartHeight + 'px;\"></div></div>');
+	var chartPopup = $('<div id=\"chartPopup\"><div id=\"chart\" style=\"width:' + chartWidth + 'px; height: ' + chartHeight + 'px;\"></div></div>');
 	$("body").append(chartPopup);
 
 	$.jqplot("chart", dataForChart, {
