@@ -20,7 +20,7 @@
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>WEB-INF/spring/properties/configuration.properties</value>
+				<value>classpath:properties/configuration.properties</value>
 			</list>
 		</property>
 	</bean>
